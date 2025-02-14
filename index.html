@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Air Force Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #0066ff;
+            --secondary: #ff3366;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --header-height: 80px;
+            --navbar-height: 60px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: padding 0.3s ease;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(0, 102, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile menu button */
+        .menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        /* Products Grid */
+        .products {
+            padding: 100px 5%;
+            background: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.4em;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: auto;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                transition: 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+        }
+
+        /* Responsive Header */
+        .main-header {
+            padding: clamp(60px, 10vw, 150px) 20px clamp(30px, 5vw, 50px);
+        }
+
+        .main-header h1 {
+            font-size: clamp(2em, 5vw, 4em);
+        }
+
+        /* Responsive Navbar */
+        .navbar {
+            height: var(--navbar-height);
+            padding: 0 clamp(15px, 3vw, 50px);
+        }
+
+        .logo {
+            font-size: clamp(1.2em, 3vw, 1.5em);
+        }
+
+        /* Responsive Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: clamp(15px, 2vw, 30px);
+            padding: clamp(10px, 2vw, 20px);
+        }
+
+        .gallery-item {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Responsive Footer */
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+            gap: clamp(20px, 4vw, 50px);
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 1200px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 992px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                transition: 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                padding: 15px;
+                width: 100%;
+                text-align: center;
+                font-size: 1.1em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                padding: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .main-header h1 {
+                font-size: 2em;
+            }
+
+            .gallery-item {
+                margin: 0;
+            }
+
+            .gallery-info {
+                padding: 15px;
+            }
+
+            .gallery-name {
+                font-size: 1em;
+            }
+
+            .gallery-price {
+                font-size: 1.2em;
+            }
+
+            .footer {
+                padding: 40px 20px 20px;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) {
+            .nav-links a:active {
+                background: rgba(0, 102, 255, 0.1);
+            }
+
+            .gallery-item:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* High DPI Screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .gallery-image img {
+                image-rendering: -webkit-optimize-contrast;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: rgba(18, 18, 18, 0.95);
+            }
+
+            .nav-links a {
+                color: #fff;
+            }
+
+            .gallery-item {
+                background: #1a1a1a;
+            }
+
+            .gallery-name {
+                color: #fff;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .navbar {
+                position: static;
+                box-shadow: none;
+            }
+
+            .gallery-item {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Move this header section before the navbar -->
+    <header class="main-header">
+        <style>
+            .main-header {
+                text-align: center;
+                padding: 150px 20px 50px;
+                background: linear-gradient(135deg, #0066ff, #ff3366);
+            }
+
+            .main-header h1 {
+                font-size: 4em;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 20px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                animation: glow 2s ease-in-out infinite alternate;
+            }
+
+            @keyframes glow {
+                from {
+                    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0066ff;
+                }
+                to {
+                    text-shadow: 0 0 20px #fff, 0 0 30px #ff3366, 0 0 40px #ff3366;
+                }
+            }
+        </style>
+        <h1>Airforce Sneakers</h1>
+    </header>
+
+    <!-- Then place the navbar after the header -->
+    <nav class="navbar">
+        <a href="#" class="logo">AirForce Elite</a>
+        <div class="menu-btn">☰</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#new">New Arrivals</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Step Into Style</h1>
+            <p>Discover the latest Air Force collection</p>
+            <button class="cta-button">Shop Now</button>
+        </div>
+    </section>
+
+    <section class="products" id="products">
+        <h2>Featured Products</h2>
+        <div class="products-grid">
+            <!-- Product cards will be dynamically added here -->
+        </div>
+    </section>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                name: "Air Force 1 '07",
+                price: "$99.99",
+                image: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/350e7f3a-979a-402b-9396-a8a998dd76ab/air-force-1-07-mens-shoes-5QFp5Z.png"
+            },
+            // Add more products...
+        ];
+
+        // Dynamically create product cards
+        const productsGrid = document.querySelector('.products-grid');
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-price">${product.price}</p>
+                </div>
+            `;
+            productsGrid.appendChild(card);
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.navbar')) {
+                navLinks.classList.remove('active');
+                menuBtn.textContent = '☰';
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.padding = '15px 5%';
+            } else {
+                navbar.style.padding = '20px 5%';
+            }
+        });
+    </script>
+
+    <!-- Add this gallery section before the footer -->
+    <section class="sneaker-gallery">
+        <style>
+            .sneaker-gallery {
+                padding: 80px 5%;
+                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            }
+
+            .gallery-title {
+                text-align: center;
+                margin-bottom: 50px;
+            }
+
+            .gallery-title h2 {
+                font-size: 2.5em;
+                color: var(--dark);
+                margin-bottom: 15px;
+                background: linear-gradient(45deg, var(--primary), var(--secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .gallery-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+                padding: 20px;
+            }
+
+            .gallery-item {
+                background: white;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .gallery-item:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            }
+
+            .gallery-image {
+                position: relative;
+                overflow: hidden;
+                padding-top: 100%;
+            }
+
+            .gallery-image img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .gallery-item:hover .gallery-image img {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+            .gallery-info {
+                padding: 20px;
+                position: relative;
+            }
+
+            .gallery-name {
+                font-size: 1.2em;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .gallery-price {
+                font-size: 1.4em;
+                color: var(--primary);
+                font-weight: 700;
+            }
+
+            .gallery-badge {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 5px 15px;
+                border-radius: 20px;
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+
+            /* Enhanced Footer Styles */
+            .footer {
+                background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+                color: white;
+                padding: 80px 5% 30px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .footer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: linear-gradient(90deg, var(--primary), var(--secondary));
+            }
+
+            .footer-content {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 50px;
+                margin-bottom: 50px;
+            }
+
+            .footer-section h3 {
+                font-size: 1.4em;
+                margin-bottom: 25px;
+                position: relative;
+                padding-bottom: 15px;
+            }
+
+            .footer-section h3::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 50px;
+                height: 3px;
+                background: var(--primary);
+            }
+
+            .footer-links {
+                list-style: none;
+            }
+
+            .footer-links li {
+                margin-bottom: 15px;
+            }
+
+            .footer-links a {
+                color: #999;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .footer-links a:hover {
+                color: var(--primary);
+            }
+
+            .social-links {
+                display: flex;
+                gap: 20px;
+                margin-top: 20px;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .social-links a:hover {
+                background: var(--primary);
+                transform: translateY(-5px);
+            }
+
+            .footer-bottom {
+                text-align: center;
+                padding-top: 30px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .footer-bottom p {
+                color: #999;
+                font-size: 0.9em;
+            }
+
+            @media (max-width: 768px) {
+                .footer-content {
+                    grid-template-columns: 1fr;
+                    text-align: center;
+                }
+
+                .footer-section h3::after {
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+
+                .social-links {
+                    justify-content: center;
+                }
+            }
+        </style>
+
+        <div class="gallery-title">
+            <h2>Featured Collection</h2>
+            <p>Explore our exclusive Air Force designs</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <div class="gallery-badge">New</div>
+                <div class="gallery-image">
+                    <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/350e7f3a-979a-402b-9396-a8a998dd76ab/air-force-1-07-mens-shoes-5QFp5Z.png" alt="Air Force 1 White">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 '07 White</h3>
+                    <p class="gallery-price">$99.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Trending</div>
+                <div class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1628253747716-0c4f5c90fdda?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bmlrZSUyMGFpciUyMGZvcmNlJTIwMXxlbnwwfHwwfHx8MA%3D%3D">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 '07 Black</h3>
+                    <p class="gallery-price">$109.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Limited</div>
+                <div class="gallery-image">
+                    <img src="data:image/jpeg;base64,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" alt="Air Force 1 Retro">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 Retro</h3>
+                    <p class="gallery-price">$129.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Premium</div>
+                <div class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1614689540269-7f9315660d59?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG5pa2UlMjBhaXIlMjBmb3JjZSUyMDF8ZW58MHx8MHx8fDA%3D">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 '07 Premium</h3>
+                    <p class="gallery-price">$139.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Custom</div>
+                <div class="gallery-image">
+                    <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/99486859-0ff3-46b4-949b-2d16af2ad421/custom-nike-air-force-1-high-by-you-shoes.png" alt="Air Force 1 High Custom">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 High Custom</h3>
+                    <p class="gallery-price">$159.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Special</div>
+                <div class="gallery-image">
+                    <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e6da41fa-1be4-4ce5-b89c-22be4f1f02d4/air-force-1-07-shoes-WrLlWX.png" alt="Air Force 1 Special Edition">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 Special Edition</h3>
+                    <p class="gallery-price">$149.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Exclusive</div>
+                <div class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1608319318013-290bac041539?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fG5pa2UlMjBhaXIlMjBmb3JjZSUyMDF8ZW58MHx8MHx8fDA%3D">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 Exclusive</h3>
+                    <p class="gallery-price">$169.99</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <div class="gallery-badge">Limited</div>
+                <div class="gallery-image">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG5pa2UlMjBhaXIlMjBmb3JjZSUyMDF8ZW58MHx8MHx8fDA%3D">
+                </div>
+                <div class="gallery-info">
+                    <h3 class="gallery-name">Air Force 1 Limited Edition</h3>
+                    <p class="gallery-price">$179.99</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Discover the latest in Air Force sneaker fashion and style. Premium quality and authentic designs.</p>
+                <div class="social-links">
+                    <a href="#"><span>📱</span></a>
+                    <a href="#"><span>💼</span></a>
+                    <a href="#"><span>🐦</span></a>
+                    <a href="#"><span>📸</span></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li>Email: contact@example.com</li>
+                    <li>Phone: (555) 123-4567</li>
+                    <li>Address: 123 Sneaker Street</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Moses Williams. All rights reserved. | Designed with ❤️ by Moses Williams</p>
+        </div>
+    </footer>
+</body>
+</html>
